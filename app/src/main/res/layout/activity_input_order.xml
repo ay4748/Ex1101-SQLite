@@ -52,8 +52,9 @@
         android:ems="10"
         android:hint="worker"
         android:inputType="text"
-        app:layout_constraintTop_toBottomOf="@+id/ettime"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ettime" />
 
     <EditText
         android:id="@+id/etprovidor"

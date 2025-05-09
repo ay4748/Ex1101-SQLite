@@ -1,11 +1,19 @@
+/**
+ * Activity for displaying and managing statistics from various database tables.
+ * Allows users to view, sort, and delete records from Worker, Company, Meal, and Order tables
+ * using a spinner for table selection, a filter spinner for sorting, and a ListView for displaying records.
+ */
 package com.example.ex1101_sqlite;
 
 import static com.example.ex1101_sqlite.Worker.KEY_ID;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,22 +26,46 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+/**
+ * Activity class that handles the display and manipulation of database records.
+ * Implements AdapterView.OnItemSelectedListener for spinner interactions and
+ * AdapterView.OnItemClickListener for ListView item clicks.
+ */
 public class showStatsActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, AdapterView.OnItemClickListener {
 
+    /** SQLite database instance for data operations */
     SQLiteDatabase db;
+    /** Database helper for managing database creation and version */
     HelperDB hlp;
+    /** Cursor for querying database records */
     Cursor crsr;
+    /** Array of table names for the spinner */
     String[] names = {"worker", "parkfood", "meal", "order"};
+    /** Button to return to the previous activity */
     Button back_btn;
+    /** ListView to display database records */
     ListView lvrecords;
-    Spinner menu, spinner_filter;
+    /** Spinner for selecting the table to display */
+    Spinner menu;
+    /** Spinner for selecting sorting options */
+    Spinner spinner_filter;
 
+    /** ArrayList to store records for display */
     ArrayList<String> tbl;
+    /** ArrayList to store primary keys of records */
     ArrayList<Integer> keysList;
 
+    /** Tracks the selected table index from the menu spinner */
     int count = 0;
+    /** Tracks the selected item index in the ListView */
     int count2 = 0;
 
+    /**
+     * Initializes the activity, sets up the UI, and configures listeners for spinners and ListView.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after previously being shut down,
+     *                           this Bundle contains the data it most recently supplied in onSaveInstanceState(Bundle).
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +86,15 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Handles item selection events for the spinners.
+     * Handles item selection events for the menu and filter spinners.
+     * Updates the ListView based on the selected table and sorting option.
      *
-     * @param parent   The AdapterView where the selection happened.
-     * @param view     The view within the AdapterView that was clicked.
-     * @param pos      The position of the view in the adapter.
-     * @param rowid    The row id of the item that is selected.
+     * @param parent   The AdapterView where the selection happened
+     * @param view     The view within the AdapterView that was clicked
+     * @param pos      The position of the view in the adapter
+     * @param rowid    The row id of the item that is selected
      */
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long rowid) {
         if (parent == menu) {
             if (pos == 0) {
@@ -125,23 +159,24 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Handles the event when nothing is selected in the spinner.
+     * Handles cases where no item is selected in a spinner.
      *
-     * @param parent The AdapterView where the nothing-selected event happened.
+     * @param parent The AdapterView where nothing was selected
      */
+    @Override
     public void onNothingSelected(AdapterView<?> parent) {
         Log.i("SpinDemo", "Nothing selected");
     }
 
     /**
-     * Displays worker data in the ListView.
+     * Retrieves and displays worker data in the ListView without sorting.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the worker data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the worker data
      */
     public ArrayList<String> worker_show(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -182,14 +217,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays worker data in the ListView, sorted by last name.
+     * Retrieves and displays worker data in the ListView, sorted by last name.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the sorted worker data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the sorted worker data
      */
     public ArrayList<String> worker_show_sort(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -230,14 +265,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays ParkFood data in the ListView.
+     * Retrieves and displays company (ParkFood) data in the ListView without sorting.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the ParkFood data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the company data
      */
     public ArrayList<String> parkfood_show(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -274,14 +309,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays ParkFood data in the ListView, sorted by company name.
+     * Retrieves and displays company (ParkFood) data in the ListView, sorted by company name.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the sorted ParkFood data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the sorted company data
      */
     public ArrayList<String> parkfood_show_sort(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -318,14 +353,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays meal data in the ListView.
+     * Retrieves and displays meal data in the ListView.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the meal data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the meal data
      */
     public ArrayList<String> meal_show(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -362,14 +397,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays order data in the ListView.
+     * Retrieves and displays order data in the ListView without sorting.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the order data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the order data
      */
     public ArrayList<String> order_show(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -407,14 +442,14 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Displays order data in the ListView, sorted by employee name.
+     * Retrieves and displays order data in the ListView, sorted by employee name.
      *
-     * @param lvrecords The ListView to display the data in.
-     * @param tbl       The ArrayList to store the data.
-     * @param crsr      The Cursor to read the data from.
-     * @param hlp       The HelperDB instance.
-     * @param db        The SQLiteDatabase instance.
-     * @return The ArrayList containing the sorted order data.
+     * @param lvrecords The ListView to display the data
+     * @param tbl       The ArrayList to store the data
+     * @param crsr      The Cursor to read the data from
+     * @param hlp       The HelperDB instance
+     * @param db        The SQLiteDatabase instance
+     * @return The ArrayList containing the sorted order data
      */
     public ArrayList<String> order_show_sort(ListView lvrecords, ArrayList<String> tbl, Cursor crsr, HelperDB hlp, SQLiteDatabase db) {
         hlp = new HelperDB(this);
@@ -452,14 +487,22 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
     }
 
     /**
-     * Finishes the current activity and returns to the previous one.
+     * Closes the current activity and returns to the previous screen.
      *
-     * @param view The view that triggered the action.
+     * @param view The view that triggered the action
      */
     public void back(View view) {
         finish();
     }
 
+    /**
+     * Handles item click events in the ListView, storing the selected item's index.
+     *
+     * @param adapterView The AdapterView where the click happened
+     * @param view        The view that was clicked
+     * @param i           The position of the item in the adapter
+     * @param l           The row id of the item that was clicked
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         count2 = i;
@@ -467,8 +510,9 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
 
     /**
      * Deletes the selected item from the database and updates the ListView.
+     * Handles cascading deletes for related records in other tables.
      *
-     * @param view The view that triggered the action.
+     * @param view The view that triggered the action
      */
     public void clickedDeleteItem(View view) {
         if (tbl == null || tbl.isEmpty() || count2 < 0 || count2 >= tbl.size()) {
@@ -502,5 +546,33 @@ public class showStatsActivity extends AppCompatActivity implements AdapterView.
         lvrecords.setAdapter(spinneradp);
 
         Toast.makeText(this, "Item deleted", Toast.LENGTH_SHORT).show();
+    }
+
+
+    /**
+     * create the options menu
+     *
+     * @param menu The options menu
+     * @return return true
+     */
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * Checks the selection in the options menu
+     *
+     * @param menu The selected menu item.
+     * @return return true
+     */
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        String num1 = menu.getTitle().toString();
+        if (num1.equals("credits"))
+        {
+            Intent si = new Intent(this,credits_menu.class);
+            startActivity(si);
+        }
+        return super.onOptionsItemSelected(menu);
     }
 }

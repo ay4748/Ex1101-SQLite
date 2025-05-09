@@ -11,7 +11,7 @@
         android:id="@+id/etCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="4dp"
         android:ems="10"
         android:hint="card number"
         android:inputType="number"
@@ -65,8 +65,9 @@
         android:ems="10"
         android:hint="phone number"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/etLastName"
-        tools:layout_editor_absoluteX="95dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etLastName" />
 
     <EditText
         android:id="@+id/etId"
@@ -76,18 +77,22 @@
         android:ems="10"
         android:hint="ID"
         android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@+id/etPhone"
-        tools:layout_editor_absoluteX="95dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPhone" />
 
     <EditText
         android:id="@+id/etCompany"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="Company you work for"
         android:inputType="text"
-        tools:layout_editor_absoluteX="95dp"
-        tools:layout_editor_absoluteY="537dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etId" />
 
     <Button
         android:id="@+id/button6"
@@ -96,9 +101,12 @@
         android:layout_marginTop="28dp"
         android:onClick="InserttoDB"
         android:text="OK"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCompany" />
+        app:layout_constraintTop_toBottomOf="@+id/etCompany"
+        app:layout_constraintVertical_bias="0.219" />
 
     <Button
         android:id="@+id/button7"

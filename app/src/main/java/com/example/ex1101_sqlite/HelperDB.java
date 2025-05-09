@@ -4,17 +4,32 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Helper class for managing the application's SQLite database.
+ * This class extends {@link SQLiteOpenHelper} to provide methods for creating,
+ * upgrading, and managing the database.
+ */
 public class HelperDB extends SQLiteOpenHelper
 {
     private static final String DATABASE_NAME = "dbexam.db";
     private static final int DATABASE_VERSION = 69;
     String strCreate, strDelete;
 
-
+    /**
+     * Constructs a new {@link HelperDB} instance.
+     *
+     * @param context The application context.
+     */
     public HelperDB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    /**
+     * Called when the database is created for the first time. This is where the
+     * creation of tables and the initial population of the database should happen.
+     *
+     * @param db The database.
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         strCreate = "CREATE TABLE " + Worker.TABLE_WORKER +
@@ -58,8 +73,22 @@ public class HelperDB extends SQLiteOpenHelper
 
     }
 
+    /**
+     * Called when the database needs to be upgraded. The implementation
+     * should use this method to drop tables, add tables, or do anything else it
+     * needs to upgrade to the new schema version.
+     *
+     * <p>The SQLite ALTER TABLE command supports limited options. If you need to
+     * make extensive changes, you may need to use ALTER TABLE to add columns,
+     * then copy data from the old tables to the new tables, then drop the old
+     * tables.
+     *
+     * @param db         The database.
+     * @param oldVersion The old database version.
+     * @param newVersion The new database version.
+     */
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         strDelete = "DROP TABLE IF EXISTS " + Worker.TABLE_WORKER;
         db.execSQL(strDelete);
